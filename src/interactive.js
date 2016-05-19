@@ -12,14 +12,20 @@ pc.g = function() { return g; };
 // rescale for height, width and margins
 // TODO currently assumes chart is brushable, and destroys old brushes
 pc.resize = function() {
+  // reference the current brushMode
+  var currentBrushMode = pc.brushMode();
+  
+  // reinstalling brushes when resizing currently works for "1D-axes" and "1D-axes-multi"
+  if (currentBrushMode === "1D-axes" || currentBrushMode === "1D-axes-multi") {
+    //store the current brush state
+    var brushModeState = pc.brushExtents();
+  }
+  
   // selection size
   pc.selection.select("svg")
     .attr("width", __.width)
     .attr("height", __.height)
   pc.svg.attr("transform", "translate(" + __.margin.left + "," + __.margin.top + ")");
-
-  // FIXME: the current brush state should pass through
-  if (flags.brushable) pc.brushReset();
 
   // scales
   pc.autoscale();
@@ -28,6 +34,15 @@ pc.resize = function() {
   if (g) pc.createAxes();
   if (flags.brushable) pc.brushable();
   if (flags.reorderable) pc.reorderable();
+  
+  // reinstalling brushes when resizing currently works for "1D-axes" and "1D-axes-multi"
+  // createAxes() destroyed the brush elements, reinstall them and restore the brush state
+  if (currentBrushMode === "1D-axes" || currentBrushMode === "1D-axes-multi") {
+    // install() recreates the brush elements and their events, assigns empty brush extents
+    brushmodeObject.install();
+    // set the empty brush extents to the saved brush state
+    pc.brushExtents(brushModeState);
+  }
 
   events.resize.call(this, {width: __.width, height: __.height, margin: __.margin});
   return this;

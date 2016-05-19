@@ -44,6 +44,7 @@ pc.brushModes = function() {
   return Object.getOwnPropertyNames(brush.modes);
 };
 
+var brushmodeObject;
 pc.brushMode = function(mode) {
   if (arguments.length === 0) {
     return brush.mode;
@@ -66,6 +67,10 @@ pc.brushMode = function(mode) {
     brush.modes[brush.mode].uninstall(pc);
     // Finally, we can install the requested one.
     brush.mode = mode;
+
+    // Reference brushmode object for later use at resize() function
+    brushmodeObject = brush.modes[brush.mode];
+
     brush.modes[brush.mode].install();
     if (mode === "None") {
       delete pc.brushPredicate;
