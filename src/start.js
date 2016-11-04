@@ -15,6 +15,7 @@ d3.parcoords = function(config) {
     nullValueSeparator: "undefined", // set to "top" or "bottom"
     nullValueSeparatorPadding: { top: 8, right: 0, bottom: 8, left: 0 },
     color: "#069",
+    highlightColor: null,
     composite: "source-over",
     alpha: 0.7,
     bundlingStrength: 0.5,

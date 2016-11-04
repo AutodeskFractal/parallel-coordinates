@@ -15,6 +15,7 @@ d3.parcoords = function(config) {
     nullValueSeparator: "undefined", // set to "top" or "bottom"
     nullValueSeparatorPadding: { top: 8, right: 0, bottom: 8, left: 0 },
     color: "#069",
+    highlightColor: null,
     composite: "source-over",
     alpha: 0.7,
     bundlingStrength: 0.5,
@@ -95,6 +96,9 @@ var side_effects = d3.dispatch.apply(this,d3.keys(__))
   })
   .on("brushedColor", function (d) {
     ctx.brushed.strokeStyle = d.value;
+  })
+  .on("highlightColor", function (d) {
+    ctx.highlight.strokeStyle = d.value;
   })
   .on("width", function(d) { pc.resize(); })
   .on("height", function(d) { pc.resize(); })
@@ -285,6 +289,7 @@ pc.autoscale = function() {
   ctx.brushed.scale(devicePixelRatio, devicePixelRatio);
   ctx.highlight.lineWidth = 3;
   ctx.highlight.scale(devicePixelRatio, devicePixelRatio);
+  ctx.highlight.strokeStyle = __.highlightColor;
 
   return this;
 };
@@ -666,7 +671,11 @@ function path_foreground(d, i) {
 };
 
 function path_highlight(d, i) {
-  ctx.highlight.strokeStyle = d3.functor(__.color)(d, i);
+	if (__.highlightColor !== null) {
+		ctx.highlight.strokeStyle = d3.functor(__.highlightColor)(d, i)
+	} else {
+		ctx.highlight.strokeStyle = d3.functor(__.color)(d, i);
+	}
 	return color_path(d, ctx.highlight);
 };
 pc.clear = function(layer) {
@@ -704,6 +713,11 @@ function flipAxisAndUpdatePCP(dimension) {
   }
 
   pc.render();
+
+  if (__.highlighted != 0) {
+    pc.highlight(__.highlighted);
+  }
+  
 }
 
 function rotateLabels() {
@@ -915,6 +929,11 @@ pc.reorderable = function() {
         delete dragging[d];
         d3.select(this).transition().attr("transform", "translate(" + xscale(d) + ")");
         pc.render();
+
+        if (__.highlighted != 0) {
+          pc.highlight(__.highlighted);
+        }
+
       }));
   flags.reorderable = true;
   return this;

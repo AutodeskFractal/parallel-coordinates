@@ -19,6 +19,11 @@ function flipAxisAndUpdatePCP(dimension) {
   }
 
   pc.render();
+
+  if (__.highlighted != 0) {
+    pc.highlight(__.highlighted);
+  }
+  
 }
 
 function rotateLabels() {
@@ -230,6 +235,11 @@ pc.reorderable = function() {
         delete dragging[d];
         d3.select(this).transition().attr("transform", "translate(" + xscale(d) + ")");
         pc.render();
+
+        if (__.highlighted != 0) {
+          pc.highlight(__.highlighted);
+        }
+
       }));
   flags.reorderable = true;
   return this;
