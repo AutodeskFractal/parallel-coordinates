@@ -102,6 +102,10 @@ function path_foreground(d, i) {
 };
 
 function path_highlight(d, i) {
-  ctx.highlight.strokeStyle = d3.functor(__.color)(d, i);
+	if (__.highlightColor !== null) {
+		ctx.highlight.strokeStyle = d3.functor(__.highlightColor)(d, i)
+	} else {
+		ctx.highlight.strokeStyle = d3.functor(__.color)(d, i);
+	}
 	return color_path(d, ctx.highlight);
 };

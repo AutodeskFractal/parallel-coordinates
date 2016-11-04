@@ -102,6 +102,7 @@ pc.autoscale = function() {
   ctx.brushed.scale(devicePixelRatio, devicePixelRatio);
   ctx.highlight.lineWidth = 3;
   ctx.highlight.scale(devicePixelRatio, devicePixelRatio);
+  ctx.highlight.strokeStyle = __.highlightColor;
 
   return this;
 };

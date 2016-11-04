@@ -30,6 +30,9 @@ var side_effects = d3.dispatch.apply(this,d3.keys(__))
   .on("brushedColor", function (d) {
     ctx.brushed.strokeStyle = d.value;
   })
+  .on("highlightColor", function (d) {
+    ctx.highlight.strokeStyle = d.value;
+  })
   .on("width", function(d) { pc.resize(); })
   .on("height", function(d) { pc.resize(); })
   .on("margin", function(d) { pc.resize(); })
