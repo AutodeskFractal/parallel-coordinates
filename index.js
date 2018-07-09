@@ -1,3 +1,4 @@
+const d3 = require('d3');
 d3.parcoords = function(config) {
   var __ = {
     data: [],
@@ -2526,3 +2527,5 @@ d3.renderQueue = (function(func) {
 
   return rq;
 });
+const parcoords = d3.parcoords;
+export default parcoords;
