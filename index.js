@@ -2527,5 +2527,3 @@ d3.renderQueue = (function(func) {
 
   return rq;
 });
-const parcoords = d3.parcoords;
-export default parcoords;
