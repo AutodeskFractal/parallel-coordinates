@@ -1,3 +1,4 @@
+const d3 = require('d3');
 d3.parcoords = function(config) {
   var __ = {
     data: [],
